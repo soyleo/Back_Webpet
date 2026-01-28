@@ -160,7 +160,7 @@ app.post("/webpet/:jugadorId/limpiar", (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Servidor iniciado en http://localhost:${port}`);
+    console.log(`Servidor iniciado en ${port}`);
 });
 
 app.get("/webpet/:jugadorId/resultado-turno", (req, res) => {
