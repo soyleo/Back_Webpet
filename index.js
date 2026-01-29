@@ -2,6 +2,12 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
+
+app.get('/', (req, res) => {
+    res.send('Servidor de Webpet funcionando correctamente.');
+    console.log("latido cronjob");
+});
+
 app.use(cors());
 app.use(express.json());
 
@@ -47,10 +53,7 @@ setInterval(() => {
 
 // RUTAS
 
-app.get('/', (req, res) => {
-    res.send('Servidor de Webpet funcionando correctamente.');
-    console.log("latido cronjob");
-});
+
 
 app.get('/unirse', (req, res) => {
     const id = `${Math.random()}`;
