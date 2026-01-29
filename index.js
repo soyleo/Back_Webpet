@@ -47,6 +47,11 @@ setInterval(() => {
 
 // --- RUTAS ---
 
+// Agrega esto en tu index.js
+app.get('/', (req, res) => {
+    res.send('Servidor de Webpet funcionando correctamente.');
+});
+
 app.get('/unirse', (req, res) => {
     const id = `${Math.random()}`;
     const jugador = new Jugador(id);
