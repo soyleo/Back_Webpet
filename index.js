@@ -38,18 +38,18 @@ function actualizarLatido(id) {
     }
 }
 
-// --- LIMPIEZA AUTOMÁTICA ---
+// LIMPIEZA AUTOMÁTICA
 setInterval(() => {
     const ahora = Date.now();
     // Si no se ha visto al jugador en 30 segundos, se elimina
     jugadores = jugadores.filter(jugador => (ahora - jugador.lastSeen) < 30000);
 }, 5000);
 
-// --- RUTAS ---
+// RUTAS
 
-// Agrega esto en tu index.js
 app.get('/', (req, res) => {
     res.send('Servidor de Webpet funcionando correctamente.');
+    console.log("latido cronjob");
 });
 
 app.get('/unirse', (req, res) => {
@@ -85,7 +85,7 @@ app.post("/webpet/:jugadorId", (req, res) => {
     const jugadorId = req.params.jugadorId;
     const nombreWebPet = req.body.webPet || "";
     
-    actualizarLatido(jugadorId); // <--- Actualizamos aquí
+    actualizarLatido(jugadorId);
     
     const jugador = jugadores.find((j) => jugadorId === j.id);
     if (jugador) {
@@ -96,7 +96,7 @@ app.post("/webpet/:jugadorId", (req, res) => {
 
 app.get("/matchmaking/:jugadorId", (req, res) => {
     const jugadorId = req.params.jugadorId;
-    actualizarLatido(jugadorId); // <--- Actualizamos aquí
+    actualizarLatido(jugadorId);
 
     const jugador = jugadores.find(j => j.id === jugadorId);
     if (!jugador) return res.status(404).send("No existe el jugador");
@@ -106,7 +106,7 @@ app.get("/matchmaking/:jugadorId", (req, res) => {
         if (oponente) {
             return res.send({ hayOponente: true, oponentePet: oponente.webPet });
         }
-        jugador.oponenteId = null; // Si el oponente desapareció
+        jugador.oponenteId = null;
         jugador.estado = "disponible";
     }
 
@@ -172,19 +172,19 @@ app.get("/webpet/:jugadorId/resultado-turno", (req, res) => {
     const jugadorId = req.params.jugadorId;
     const jugador = jugadores.find(j => j.id === jugadorId);
     
-    // Si el jugador no existe o se quedó sin oponente
+    
     if (!jugador || !jugador.oponenteId) {
         return res.send({ listo: false, oponenteDesconectado: true });
     }
 
     const oponente = jugadores.find(j => j.id === jugador.oponenteId);
 
-    // Si el oponente ya no está en la lista (se desconectó)
+    
     if (!oponente) {
         return res.send({ listo: false, oponenteDesconectado: true });
     }
 
-    // Solo si AMBOS han atacado devolvemos "listo: true"
+    
     if (jugador.ataque && oponente.ataque) {
         res.send({
             listo: true,
